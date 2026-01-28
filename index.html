@@ -3,143 +3,139 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>クチコミ・スター・シミュレーター</title>
+    <title>Googleクチコミ ポイントシミュレーター</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        body { background-color: #fdfdfd; font-family: 'Helvetica Neue', Arial, 'Hiragino Kaku Gothic ProN', 'Hiragino Sans', Meiryo, sans-serif; }
-        .card { border-radius: 24px; box-shadow: 0 15px 35px rgba(0,0,0,0.08); }
-        .input-focus:focus { border-color: #3b82f6; ring: 2px; ring-color: #bfdbfe; }
-        .animate-fade-in { animation: fadeIn 0.5s ease-out; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        body { background-color: #f0f9ff; font-family: 'Helvetica Neue', Arial, 'Hiragino Kaku Gothic ProN', 'Hiragino Sans', Meiryo, sans-serif; }
+        .card { border-radius: 30px; box-shadow: 0 20px 40px rgba(0,0,0,0.1); }
+        
+        /* ゲームタイトル風デザイン */
+        .game-title {
+            font-size: 1.8rem;
+            font-weight: 900;
+            text-align: center;
+            line-height: 1.2;
+            background: linear-gradient(to bottom, #ffeb3b 0%, #ff9800 50%, #f44336 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            filter: drop-shadow(2px 2px 0px #5d4037);
+            margin-bottom: 1.5rem;
+        }
+        .game-title span { display: block; font-size: 1.2rem; filter: none; -webkit-text-fill-color: #3b82f6; background: none; }
+
+        .animate-pop { animation: pop 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+        @keyframes pop { from { transform: scale(0.8); opacity: 0; } to { transform: scale(1); opacity: 1; } }
     </style>
 </head>
 <body class="p-4 md:p-8">
-    <div class="max-w-md mx-auto bg-white card p-8 border border-gray-100">
-        <h1 class="text-2xl font-bold text-center text-blue-600 mb-8">🚀 逆転！クチコミ目標設定</h1>
+    <div class="max-w-md mx-auto bg-white card p-8 border-4 border-blue-100">
+        <div class="game-title">
+            <span>Googleクチコミ</span>
+            ポイントシミュレーター
+        </div>
         
         <div class="space-y-5">
             <div>
-                <label class="block text-sm font-bold text-gray-600 mb-1">自店舗の点数</label>
-                <input type="number" id="currentScore" step="0.1" value="3.8" onchange="this.value=parseFloat(this.value).toFixed(1)" class="w-full p-4 bg-gray-50 border-2 border-gray-100 rounded-2xl outline-none input-focus text-lg font-semibold">
+                <label class="block text-sm font-bold text-gray-500 mb-1">自店舗の点数</label>
+                <input type="number" id="currentScore" step="0.1" value="3.8" onchange="this.value=parseFloat(this.value).toFixed(1)" class="w-full p-4 bg-gray-50 border-2 border-blue-50 rounded-2xl outline-none focus:border-blue-400 text-lg font-black text-blue-600">
             </div>
             <div>
-                <label class="block text-sm font-bold text-gray-600 mb-1">現在のクチコミ件数</label>
-                <input type="number" id="currentCount" value="50" class="w-full p-4 bg-gray-50 border-2 border-gray-100 rounded-2xl outline-none input-focus text-lg font-semibold">
+                <label class="block text-sm font-bold text-gray-500 mb-1">現在のクチコミ件数</label>
+                <input type="number" id="currentCount" value="50" class="w-full p-4 bg-gray-50 border-2 border-blue-50 rounded-2xl outline-none focus:border-blue-400 text-lg font-black text-blue-600">
             </div>
-            <div class="pb-6 border-b-2 border-dashed border-gray-100">
-                <label class="block text-sm font-bold text-orange-600 mb-1">ライバルの点数（目標）</label>
-                <input type="number" id="targetScore" step="0.1" value="4.2" onchange="this.value=parseFloat(this.value).toFixed(1)" class="w-full p-4 bg-orange-50 border-2 border-orange-100 rounded-2xl outline-none focus:border-orange-400 text-lg font-semibold text-orange-700">
+            <div class="pb-6 border-b-4 border-dotted border-blue-50">
+                <label class="block text-sm font-bold text-orange-500 mb-1">ライバルの点数（目標）</label>
+                <input type="number" id="targetScore" step="0.1" value="4.2" onchange="this.value=parseFloat(this.value).toFixed(1)" class="w-full p-4 bg-orange-50 border-2 border-orange-100 rounded-2xl outline-none focus:border-orange-400 text-lg font-black text-orange-600">
             </div>
             
-            <button onclick="calculate()" class="w-full bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white font-bold py-5 rounded-2xl shadow-lg transition-all transform hover:scale-[1.02] active:scale-95">
-                逆転プランをチェック！
+            <button onclick="calculate()" class="w-full bg-gradient-to-b from-yellow-400 to-orange-500 hover:from-yellow-300 hover:to-orange-400 text-white font-black py-5 rounded-2xl shadow-[0_4px_0_rgb(194,120,0)] active:shadow-none active:translate-y-1 transition-all text-xl tracking-widest">
+                計算開始！！
             </button>
         </div>
 
-        <div id="result" class="mt-8 hidden animate-fade-in">
-            <div class="mb-8">
-                <h3 class="font-bold text-gray-800 mb-4 text-center flex items-center justify-center">
-                    <span class="text-xl mr-2">🏆</span> ライバルに追いつくには？
-                </h3>
-                <div id="plans" class="space-y-3">
-                    </div>
+        <div id="result" class="mt-8 hidden">
+            <div class="mb-6">
+                <h3 class="font-black text-gray-700 mb-4 text-center text-lg italic">⚔️ VS RIVAL...</h3>
+                <div id="plans" class="space-y-3"></div>
             </div>
 
-            <div class="mb-8 p-4 bg-gray-50 rounded-2xl border border-gray-100">
-                <p class="text-xs font-black text-gray-400 uppercase tracking-widest text-center mb-3">—— SMALL STEPS ——</p>
-                <div id="smallSteps" class="space-y-2">
-                    </div>
+            <div class="mb-6 p-5 bg-gradient-to-br from-blue-50 to-white rounded-3xl border-2 border-blue-100 shadow-inner">
+                <p class="text-xs font-black text-blue-300 uppercase tracking-tighter text-center mb-3">—— STEP UP GOALS ——</p>
+                <div id="smallSteps" class="space-y-2"></div>
             </div>
 
-            <div id="motivationMessage" class="p-6 rounded-2xl text-center font-bold text-lg leading-relaxed shadow-inner">
-                </div>
+            <div id="motivationMessage" class="p-6 rounded-3xl text-center font-bold text-lg leading-relaxed shadow-lg animate-pop"></div>
         </div>
     </div>
 
     <script>
+        const messages = [
+            "あなたの笑顔が★5に変わる！今日も一組のファンを作ろう！✨",
+            "ライバルも頑張っているけど、うちのチームワークなら絶対勝てる！🤝",
+            "お客様はあなたのファンになりたがっています。勇気を出して声をかけよう！📣",
+            "1件の★5は、100人の新規客を呼ぶ魔法です。さあ、魔法をかけに行こう！🧙",
+            "コツコツが勝つコツ！1ヶ月後の景色を一緒に変えましょう！🚀",
+            "今の頑張りは、必ず数字になって現れます。自分たちを信じて！💎",
+            "点数が上がると、もっと素敵なお客様が集まる好循環が始まりますよ！🌈",
+            "「ありがとう」の数だけ点数は上がる。今日も感謝を形に！🙏",
+            "一歩ずつで大丈夫。その一歩が地域No.1への最短ルートです！🏆",
+            "接客のプロとして、最後の一言で「★5」を掴み取りましょう！🔥"
+        ];
+
         function calculate() {
             const curS = parseFloat(document.getElementById('currentScore').value);
             const curC = parseInt(document.getElementById('currentCount').value);
             const tarS = parseFloat(document.getElementById('targetScore').value);
             
             if (curS >= tarS) {
-                alert("すでに目標を達成しています！素晴らしい状態です！");
+                alert("すでに無敵の状態です！誇りを持って接客しましょう！");
                 return;
             }
 
-            document.getElementById('result').classList.remove('hidden');
-            const plansDiv = document.getElementById('plans');
-            const stepsDiv = document.getElementById('smallSteps');
-            const msgDiv = document.getElementById('motivationMessage');
-            
-            plansDiv.innerHTML = '';
-            stepsDiv.innerHTML = '';
+            const resDiv = document.getElementById('result');
+            resDiv.classList.remove('hidden');
+            resDiv.classList.add('animate-pop');
 
-            // --- メインプランの計算 ---
+            // --- メインプラン ---
             const patterns = [
-                { name: "最短ルート (★5のみ)", avg: 5.0, color: "border-blue-500 text-blue-600 bg-blue-50/30" },
-                { name: "着実ルート (★5が多め)", avg: 4.6, color: "border-gray-200 text-gray-700 bg-white" }
+                { name: "⚡ 最短！エクスプレス (★5のみ)", avg: 5.0, color: "border-yellow-400 bg-yellow-50 text-orange-700" },
+                { name: "🚲 着実！ノーマルプラン", avg: 4.6, color: "border-blue-200 bg-white text-blue-600" }
             ];
 
+            const plansDiv = document.getElementById('plans');
+            plansDiv.innerHTML = '';
             let minNeeded = 0;
+
             patterns.forEach(p => {
                 let needed = Math.ceil((tarS * curC - curS * curC) / (p.avg - tarS));
                 if (p.avg === 5.0) minNeeded = Math.max(0, needed);
-                
                 const card = document.createElement('div');
-                card.className = `p-4 border-2 ${p.color} rounded-xl shadow-sm transition-all`;
-                card.innerHTML = `<p class="text-xs font-bold opacity-70 mb-1">${p.name}</p>
-                                  <p class="text-lg font-bold">あと <span class="text-3xl font-black">${needed > 0 ? needed : "---"}</span> 件</p>`;
+                card.className = `p-4 border-4 ${p.color} rounded-2xl shadow-sm`;
+                card.innerHTML = `<p class="text-xs font-black opacity-80 mb-1">${p.name}</p>
+                                  <p class="text-2xl font-black italic">あと <span class="text-4xl">${needed > 0 ? needed : "---"}</span> 件</p>`;
                 plansDiv.appendChild(card);
             });
 
-            // --- スモールステップの計算 ---
-            let steps = [];
-            // あと0.1アップ
-            let nextPointVal = Math.round((curS + 0.1) * 10) / 10;
-            let nextPointNeeded = Math.ceil((nextPointVal * curC - curS * curC) / (5.0 - nextPointVal));
-            if (nextPointNeeded > 0 && nextPointNeeded < minNeeded) {
-                steps.push(`🎯 まずはあと<b>${nextPointNeeded}件</b>で「${nextPointVal.toFixed(1)}」へ！`);
+            // --- スモールステップ ---
+            const stepsDiv = document.getElementById('smallSteps');
+            stepsDiv.innerHTML = '';
+            let nextVal = Math.round((curS + 0.1) * 10) / 10;
+            let nNeeded = Math.ceil((nextVal * curC - curS * curC) / (5.0 - nextVal));
+            
+            if (nNeeded > 0) {
+                stepsDiv.innerHTML += `<div class="text-sm font-black text-blue-600 text-center">🎯 目標：あと${nNeeded}件で「${nextVal.toFixed(1)}」！</div>`;
             }
-            // 4.0の大台
             if (curS < 4.0 && tarS > 4.0) {
                 let toFour = Math.ceil((4.0 * curC - curS * curC) / (5.0 - 4.0));
-                if(toFour < minNeeded) {
-                    steps.push(`✨ あと<b>${toFour}件</b>で憧れの「4.0」到達！`);
-                }
-            }
-            // 表示
-            if(steps.length === 0) {
-                stepsDiv.innerHTML = `<div class="text-sm text-gray-500 text-center font-medium">目の前の1件を大切に！</div>`;
-            } else {
-                steps.forEach(s => {
-                    const d = document.createElement('div');
-                    d.className = "text-sm text-gray-700 font-bold text-center py-1";
-                    d.innerHTML = s;
-                    stepsDiv.appendChild(d);
-                });
+                stepsDiv.innerHTML += `<div class="text-sm font-black text-green-600 text-center">✨ 目標：あと${toFour}件で夢の「4.0」突破！</div>`;
             }
 
-            // --- メッセージ設定 ---
-            let message = "";
-            let bgColor = "";
-            if (minNeeded <= 5) {
-                message = "あと少し！今日、明日のお客様を全力で笑顔にしましょう！🔥";
-                bgColor = "bg-orange-100 text-orange-700";
-            } else if (minNeeded <= 15) {
-                message = "ゴールが見えてきました。スタッフ全員で「あと1件」を意識すればすぐ届きます！✨";
-                bgColor = "bg-yellow-100 text-yellow-700";
-            } else if (minNeeded <= 30) {
-                message = "一歩ずつ進みましょう。この努力が、数ヶ月後の「地域No.1」を作ります！🚀";
-                bgColor = "bg-blue-100 text-blue-700";
-            } else {
-                message = "遠くに見えますが、1件の重みは同じ。まずは目の前の1人をファンにすることから始めましょう！🌱";
-                bgColor = "bg-gray-100 text-gray-600";
-            }
-            msgDiv.innerText = message;
-            msgDiv.className = `p-6 rounded-2xl text-center font-bold text-lg leading-relaxed shadow-inner animate-fade-in ${bgColor}`;
+            // --- ランダムメッセージ ---
+            const randomMsg = messages[Math.floor(Math.random() * messages.length)];
+            const msgDiv = document.getElementById('motivationMessage');
+            msgDiv.innerText = randomMsg;
+            msgDiv.className = `p-6 rounded-3xl text-center font-bold text-lg leading-relaxed shadow-lg bg-gradient-to-r from-orange-400 to-pink-500 text-white`;
 
-            // 結果へスクロール
             window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
         }
     </script>
