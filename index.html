@@ -7,169 +7,150 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@900&display=swap');
-        body { background-color: #f8fafc; font-family: sans-serif; color: #334155; }
-        .card { border-radius: 2rem; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.08); }
+        body { background-color: #f0f4f8; font-family: sans-serif; color: #334155; }
+        .card { border-radius: 2.5rem; box-shadow: 0 20px 40px rgba(0,0,0,0.05); }
         
         .title-main { 
             font-family: 'Noto Sans JP', sans-serif;
-            background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%);
+            background: linear-gradient(to right, #2563eb, #3b82f6);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
+            font-size: 2.25rem;
+            line-height: 1.2;
         }
 
-        /* 入力欄をハッキリさせる設定 */
-        .input-field {
-            background-color: #ffffff;
-            border: 2px solid #e2e8f0;
-            border-radius: 1rem;
-            transition: all 0.2s;
-            padding: 0.75rem 1rem;
+        /* 入力欄のデザイン強化 */
+        .input-label { font-weight: 800; font-size: 0.85rem; margin-bottom: 0.5rem; display: block; }
+        .input-box {
+            background: #ffffff;
+            border: 3px solid #cbd5e1;
+            border-radius: 1.25rem;
+            padding: 1rem;
             width: 100%;
             font-weight: 900;
-            font-size: 1.25rem;
+            font-size: 1.5rem;
+            transition: all 0.2s;
         }
-        .input-field:focus {
-            border-color: #3b82f6;
-            background-color: #f0f7ff;
+        .input-box:focus {
             outline: none;
-            box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.1);
+            transform: translateY(-2px);
         }
-        .rival-field:focus {
-            border-color: #e11d48;
-            background-color: #fff1f2;
-            box-shadow: 0 0 0 4px rgba(225, 29, 72, 0.1);
-        }
+        .blue-focus:focus { border-color: #3b82f6; box-shadow: 0 10px 15px -3px rgba(59, 130, 246, 0.2); }
+        .red-focus:focus { border-color: #ef4444; box-shadow: 0 10px 15px -3px rgba(239, 68, 68, 0.2); }
 
-        .animate-pop { animation: pop 0.4s ease-out; }
-        @keyframes pop { from { transform: scale(0.98); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+        .animate-up { animation: fadeInUp 0.5s ease-out forwards; }
+        @keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
     </style>
 </head>
 <body class="p-4 md:p-10">
-    <div class="max-w-md mx-auto card p-8 bg-white border border-slate-100">
+    <div class="max-w-md mx-auto card p-8 md:p-10 bg-white border-b-8 border-gray-200">
         
-        <div class="text-center mb-8">
-            <span class="text-blue-500 font-black text-xs tracking-widest uppercase">Google Reviews</span>
-            <h1 class="title-main text-3xl font-black mt-1 leading-tight">ポイント<br>シミュレーター</h1>
+        <div class="text-center mb-10">
+            <p class="text-blue-500 font-black text-sm tracking-[0.2em] mb-2">🚀 Google Reviews</p>
+            <h1 class="title-main font-black">Googleクチコミ<br>ポイントシミュレーター✨</h1>
         </div>
         
-        <div class="space-y-6">
-            <div class="p-5 rounded-3xl bg-blue-50/50 border border-blue-100">
-                <label class="block text-xs font-black text-blue-600 mb-3 ml-1 tracking-tighter">▼ 自店舗のデータを入力</label>
-                <div class="space-y-4">
+        <div class="space-y-8">
+            <div class="space-y-4">
+                <p class="text-blue-600 font-black flex items-center gap-2">🏠 自店舗のいま</p>
+                <div class="grid grid-cols-2 gap-4">
                     <div>
-                        <p class="text-[10px] font-bold text-blue-400 mb-1 ml-1">現在の平均点数</p>
-                        <input type="number" id="currentScore" step="0.1" value="3.8" class="input-field text-blue-700">
+                        <label class="input-label text-gray-400">現在の点数</label>
+                        <input type="number" id="currentScore" step="0.1" value="3.8" class="input-box blue-focus text-blue-600">
                     </div>
                     <div>
-                        <p class="text-[10px] font-bold text-blue-400 mb-1 ml-1">現在のクチコミ件数</p>
-                        <input type="number" id="currentCount" value="50" class="input-field text-blue-700">
+                        <label class="input-label text-gray-400">現在の件数</label>
+                        <input type="number" id="currentCount" value="50" class="input-box blue-focus text-blue-600">
                     </div>
                 </div>
             </div>
 
-            <div class="p-5 rounded-3xl bg-rose-50/50 border border-rose-100">
-                <label class="block text-xs font-black text-rose-600 mb-3 ml-1 tracking-tighter">▼ 目標（ライバル）の点数</label>
-                <div>
-                    <p class="text-[10px] font-bold text-rose-400 mb-1 ml-1">目標とする点数</p>
-                    <input type="number" id="targetScore" step="0.1" value="4.2" class="input-field rival-field text-rose-700">
+            <div class="pt-4 border-t-2 border-dashed border-gray-100">
+                <p class="text-red-500 font-black flex items-center gap-2">⚔️ 目標・ライバル</p>
+                <div class="mt-4">
+                    <label class="input-label text-gray-400">目指す点数</label>
+                    <input type="number" id="targetScore" step="0.1" value="4.2" class="input-box red-focus text-red-500">
                 </div>
             </div>
             
-            <button onclick="calculate()" class="w-full bg-slate-900 hover:bg-blue-700 text-white font-black py-5 rounded-2xl shadow-lg transition-all active:scale-95 text-xl tracking-widest">
-                計算実行
+            <button onclick="calculate()" class="w-full bg-blue-600 hover:bg-blue-500 text-white font-black py-6 rounded-3xl shadow-[0_8px_0_#1e40af] active:shadow-none active:translate-y-2 transition-all text-xl tracking-widest">
+                逆転プランを練る！ 🔥
             </button>
         </div>
 
-        <div id="result" class="mt-10 hidden animate-pop">
-            <div id="plans" class="space-y-4"></div>
+        <div id="result" class="mt-12 hidden">
+            <div id="plans" class="space-y-4 mb-10"></div>
 
-            <div class="my-8 p-6 bg-slate-50 rounded-3xl border border-slate-100">
-                <p class="text-[10px] font-black text-slate-400 text-center mb-4 tracking-widest">SMALL STEP GOALS</p>
-                <div id="smallSteps" class="space-y-3"></div>
+            <div class="bg-gray-50 rounded-[2rem] p-6 mb-8">
+                <p class="text-center text-[10px] font-black text-gray-400 tracking-[0.3em] mb-4">🏆 SMALL STEP GOALS</p>
+                <div id="smallSteps" class="space-y-3 font-bold text-sm text-gray-600"></div>
             </div>
 
-            <div id="motivationMessage" class="p-6 rounded-3xl text-center font-bold text-sm leading-relaxed border-2 bg-white shadow-sm"></div>
+            <div id="motivationMessage" class="text-center italic font-bold text-blue-500 animate-up px-4"></div>
         </div>
     </div>
 
     <script>
         const messages = [
-            "あなたの笑顔が★5に変わる！今日も一組のファンを作ろう！",
-            "ライバルの背中が見えてきた！チームの団結力を見せる時です！",
-            "お客様はあなたのファンになりたがっています。最後の一声が魔法になる！",
-            "1件の★5は、100人の新規客を呼ぶギフト。心を込めて届けよう！",
-            "コツコツこそが最強の戦略。1ヶ月後の景色を一緒に変えましょう！",
-            "今の丁寧な仕事は、必ず数字になって現れます。自分たちを信じて！",
-            "点数が上がると、もっと素敵なお客様が集まる。最高の循環を作ろう！",
-            "「ありがとう」の言葉を形に。今日も感謝のバトンを繋ごう！",
-            "一歩ずつで大丈夫。その一歩が確実にNo.1へと続いています！",
-            "接客のプロとして。お客様の感動を★5という最高の評価へ！"
+            "あなたの笑顔が★5に変わる！今日も一組のファンを作ろう！ ✨",
+            "ライバルの背中が見えてきた！チームの団結力を見せる時です！ 💪",
+            "最後の一声が魔法になる！お客様はあなたのファンになりたがっています。 🪄",
+            "1件の★5は、100人の新規客を呼ぶギフト。心を込めて届けよう！ 🎁",
+            "コツコツこそが最強の戦略。1ヶ月後の景色を一緒に変えましょう！ 🚀",
+            "今の丁寧な仕事は、必ず数字になって現れます。自分たちを信じて！ ✨",
+            "点数が上がると、もっと素敵なお客様が集まる。最高の循環を作ろう！ 🌈",
+            "「ありがとう」の言葉を形に。今日も感謝のバトンを繋ごう！ 🤝",
+            "一歩ずつで大丈夫。その一歩が確実にNo.1へと続いています！ 🏆",
+            "接客のプロとして。お客様の感動を★5という最高の評価へ！ 🔥"
         ];
 
         function calculate() {
-            // 値の取得
             const curS = parseFloat(document.getElementById('currentScore').value);
             const curC = parseInt(document.getElementById('currentCount').value);
             const tarS = parseFloat(document.getElementById('targetScore').value);
             
-            // 入力チェック
-            if (isNaN(curS) || isNaN(curC) || isNaN(tarS)) {
-                alert("数値を入力してください");
-                return;
-            }
+            if (isNaN(curS) || isNaN(curC) || isNaN(tarS)) { alert("数字を入れてね！"); return; }
+            if (curS >= tarS) { alert("すでに目標達成！すごい！✨"); return; }
 
-            if (curS >= tarS) {
-                alert("目標達成中！素晴らしい！");
-                return;
-            }
+            document.getElementById('result').classList.remove('hidden');
 
-            const resDiv = document.getElementById('result');
-            resDiv.classList.remove('hidden');
-
-            // --- メインプラン計算 ---
+            // メイン計算
             const plansDiv = document.getElementById('plans');
             plansDiv.innerHTML = '';
             
-            // 最短（★5のみ）
             let needed5 = Math.ceil((tarS * curC - curS * curC) / (5.0 - tarS));
             plansDiv.innerHTML += `
-                <div class="p-5 bg-white border-2 border-blue-500 rounded-2xl relative shadow-sm">
-                    <span class="absolute top-0 right-0 bg-blue-500 text-white text-[10px] px-2 py-1 font-black rounded-bl-lg">最短ルート</span>
-                    <p class="text-[10px] font-black text-blue-400 mb-1">すべて★5を獲得した場合</p>
-                    <p class="text-xl font-black text-blue-900 font-mono">あと <span class="text-4xl">${needed5}</span> 件</p>
+                <div class="p-6 bg-blue-600 rounded-3xl text-white shadow-xl animate-up">
+                    <p class="text-[10px] font-black opacity-80 mb-1 tracking-widest">最短：すべて★5なら</p>
+                    <p class="text-lg font-bold">あと <span class="text-5xl font-black">+${needed5}</span> 件</p>
                 </div>`;
 
-            // 着実（★4.6想定）
             if (4.6 > tarS) {
                 let needed46 = Math.ceil((tarS * curC - curS * curC) / (4.6 - tarS));
                 plansDiv.innerHTML += `
-                    <div class="p-5 bg-white border-2 border-rose-400 rounded-2xl relative shadow-sm">
-                        <span class="absolute top-0 right-0 bg-rose-400 text-white text-[10px] px-2 py-1 font-black rounded-bl-lg">着実ルート</span>
-                        <p class="text-[10px] font-black text-rose-400 mb-1">★4も混ざるリアルな計算</p>
-                        <p class="text-xl font-black text-rose-900 font-mono">あと <span class="text-4xl">${needed46}</span> 件</p>
+                    <div class="p-6 bg-white border-4 border-red-500 rounded-3xl text-red-500 animate-up" style="animation-delay: 0.1s">
+                        <p class="text-[10px] font-black opacity-60 mb-1 tracking-widest">着実：★4が混ざっても</p>
+                        <p class="text-lg font-bold">あと <span class="text-5xl font-black">+${needed46}</span> 件</p>
                     </div>`;
             }
 
-            // --- スモールステップ ---
+            // スモールステップ
             const stepsDiv = document.getElementById('smallSteps');
             stepsDiv.innerHTML = '';
             let nextVal = Math.round((curS + 0.1) * 10) / 10;
             let nNeeded = Math.ceil((nextVal * curC - curS * curC) / (5.0 - nextVal));
             
             if (nNeeded > 0) {
-                stepsDiv.innerHTML += `<div class="text-xs font-black text-slate-600 flex justify-between"><span>次なる目標「${nextVal.toFixed(1)}」まで</span> <span class="text-blue-600">あと ${nNeeded}件</span></div>`;
+                stepsDiv.innerHTML += `<div class="flex justify-between items-center"><span>🎯 まずは「${nextVal.toFixed(1)}」へ</span> <span class="text-blue-600 font-black">あと ${nNeeded}件</span></div>`;
             }
             if (curS < 4.0 && tarS > 4.0) {
                 let toFour = Math.ceil((4.0 * curC - curS * curC) / (5.0 - 4.0));
-                stepsDiv.innerHTML += `<div class="text-xs font-black text-slate-600 flex justify-between pt-2 border-t border-slate-200"><span>大台の「4.0」まで</span> <span class="text-green-600">あと ${toFour}件</span></div>`;
+                stepsDiv.innerHTML += `<div class="flex justify-between items-center pt-2 border-t border-gray-200"><span>🌟 憧れの「4.0」まで</span> <span class="text-green-600 font-black">あと ${toFour}件</span></div>`;
             }
 
-            // --- メッセージ ---
-            const randomMsg = messages[Math.floor(Math.random() * messages.length)];
+            // メッセージ
             const msgDiv = document.getElementById('motivationMessage');
-            msgDiv.innerText = randomMsg;
-            msgDiv.style.borderColor = "#3b82f6";
-            msgDiv.style.color = "#1e40af";
+            msgDiv.innerText = messages[Math.floor(Math.random() * messages.length)];
 
             window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
         }
